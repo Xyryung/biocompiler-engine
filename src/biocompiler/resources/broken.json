@@ -1,0 +1,131 @@
+{
+  "experiment_name": "PETase reference assay simulation",
+  "rationale": "Illustrate buffer transfer and timed incubation for a PET assay in simulation.",
+  "pipettes": [
+    {
+      "load_name": "p300_single_gen2",
+      "mount": "left",
+      "tiprack_id": "tips"
+    }
+  ],
+  "labware": [
+    {
+      "id": "tips",
+      "load_name": "opentrons_96_tiprack_300ul",
+      "slot": 1
+    },
+    {
+      "id": "buffer",
+      "load_name": "nest_12_reservoir_15ml",
+      "slot": 2
+    },
+    {
+      "id": "assay_plate",
+      "load_name": "corning_96_wellplate_360ul_flat",
+      "slot": 3
+    }
+  ],
+  "steps": [
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "missing_plate",
+        "well": "A1"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "assay_plate",
+        "well": "A2"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "assay_plate",
+        "well": "A3"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "assay_plate",
+        "well": "A4"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "assay_plate",
+        "well": "A5"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "transfer",
+      "source": {
+        "labware_id": "buffer",
+        "well": "A1"
+      },
+      "dest": {
+        "labware_id": "assay_plate",
+        "well": "A6"
+      },
+      "volume_ul": 150,
+      "mix_after": {
+        "repetitions": 3,
+        "volume_ul": 100
+      }
+    },
+    {
+      "action": "delay",
+      "seconds": 300,
+      "message": "Simulated incubation; no heating."
+    }
+  ]
+}
