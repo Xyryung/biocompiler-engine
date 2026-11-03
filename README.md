@@ -119,6 +119,7 @@ cd apps/web
 npm ci
 npm run build
 npm run typecheck
+npm run format:check
 npx playwright install chromium
 npm run test:e2e
 ```
@@ -136,6 +137,7 @@ and desktop/mobile browser scenarios. It uploads a dashboard screenshot.
 - [Three-minute recording script](docs/demo-script.md)
 - [Submission checklist and unresolved external requirements](docs/submission-checklist.md)
 - [Issue acceptance matrix](docs/issue-status.md)
+- [Verification evidence](docs/verification.md)
 
 This project targets the Meta Global AI Developer Hackathon indie developer track.
 The [public event page](https://dev.meta.ai/events/global-hackathon) lists November 4,

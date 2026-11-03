@@ -8,7 +8,7 @@ service verification. Do not close partially satisfied issues as complete.
 | --- | --- | --- |
 | #1 Provider interface | Async protocol, packaged mock fixtures, Meta adapter, factory tests | Successful authenticated Meta call |
 | #2 FastAPI | Compile, health, OpenAPI, JSON errors, structured logs | None for mock mode |
-| #3 End-to-end | Real Opentrons pipeline under 30s; refusal integration test | CI on PR must pass |
+| #3 End-to-end | Real Opentrons pipeline under 30s; refusal integration test; Python and dashboard CI passed on PR #18 | Recheck latest PR revision before merge |
 | #4 Team / CODEOWNERS | Four existing accounts have admin/write; fallback routing file | Confirm lanes/fourth member; verify routing after base-branch merge |
 | #5 Docs / submission | Reproducible README, demo script, checklist, account attribution | Full participant rules and preferred legal names |
 | #6 Fixtures | Minimal, realistic, invalid JSON payloads in test and wheel resources | Available through shared PR to all lanes |
@@ -22,4 +22,4 @@ service verification. Do not close partially satisfied issues as complete.
 | #14 Segmentation | 96 exact synthetic masks; official SAM parser and shuffled spatial mapping tests; overlay | Live SAM validation; fixed-camera clip only |
 | #15 Feedback | RGB series, first-crossing structured event, well-labelled chart | No automatic re-drive; intentionally the documented signal-first scope |
 | #16 Dashboard | Next.js production build; five panes from real backend; browser tests | None for mock mode |
-| #17 Video | Recording/narration/render scripts and shot list | Preserve and review actual Nov 3 take; cannot retroactively meet Nov 2 backup date |
+| #17 Video | Actual 165-second 1080p dashboard recording, synthesized narration, recording/render scripts and shot list | Human playback review; cannot retroactively meet Nov 2 backup date |
