@@ -14,19 +14,18 @@ dependencies = [
     "python-dotenv>=1.0",
     "structlog>=24.4",
     "typer>=0.15",
+    "opentrons==8.8.2",
+    "numpy>=1.26.4,<2",
+    "pillow>=11.0",
+    "meta-sam-parser>=0.1.0",
 ]
 
 [project.optional-dependencies]
 bio = [
-    "numpy>=2.0",
+    "numpy>=1.26.4,<2",
 ]
 sandbox = [
     "modal>=0.67",
-]
-vision = [
-    "numpy>=2.0",
-    "pillow>=11.0",
-    "opencv-python-headless>=4.10",
 ]
 
 [dependency-groups]
@@ -35,6 +34,8 @@ dev = [
     "pytest-asyncio>=0.24",
     "ruff>=0.8",
     "mypy>=1.13",
+    "imageio-ffmpeg>=0.8.1",
+    "httpx2>=2.16",
 ]
 
 [build-system]

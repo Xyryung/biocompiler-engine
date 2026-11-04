@@ -1,0 +1,12 @@
+{
+  "stage": "vision",
+  "live": true,
+  "provider": "meta",
+  "checked_at": "2026-11-04T04:05:16.563261+00:00",
+  "status": "passed",
+  "evidence": {
+    "segmented_frames": 3,
+    "wells_per_frame": 96,
+    "minimum_mask_iou": 0.9711664482306684
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-04T01:11:04.865300+00:00",
+  "backend": "local-opentrons",
+  "opentrons_version": "8.8.2",
+  "fallback": "Explicitly allowed in issue #11",
+  "first_process_ms": 2882.052700035274,
+  "second_process_ms": 2344.649099977687,
+  "valid_success": true,
+  "broken_success": false,
+  "broken_stderr": "TypeError [line 11]: If specified, location should be an instance of `types.Location` (e.g. the return value from `Well.top()`),  `Labware` or `Well` (e.g. `tiprack.wells()[0]`). However, it is INVALID_WELL",
+  "note": "Fresh local subprocesses; these are not Modal image cold/warm measurements."
+}

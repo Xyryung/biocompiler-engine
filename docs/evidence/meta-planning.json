@@ -1,0 +1,396 @@
+{
+  "stage": "planning",
+  "live": true,
+  "provider": "meta",
+  "checked_at": "2026-11-04T03:57:59.543890+00:00",
+  "status": "passed",
+  "evidence": {
+    "valid_goals": 3,
+    "plans": [
+      {
+        "experiment_name": "Simulated PET assay concept for 45C stability",
+        "rationale": "Simulation-only liquid handling mockup for a PET degradation assay concept related to 45C stability. No enzyme, plastic substrate, heating module, or organism work is included. All transfers use buffer surrogate only, incubation is a timed pause without temperature control, and no degradation or stability results are measured or claimed. Real 45C testing would need separate validated heating and analytics.",
+        "pipettes": [
+          {
+            "load_name": "p300_single_gen2",
+            "mount": "left",
+            "tiprack_id": "tips"
+          }
+        ],
+        "labware": [
+          {
+            "id": "tips",
+            "load_name": "opentrons_96_tiprack_300ul",
+            "slot": 1
+          },
+          {
+            "id": "buffer",
+            "load_name": "nest_12_reservoir_15ml",
+            "slot": 2
+          },
+          {
+            "id": "assay_plate",
+            "load_name": "corning_96_wellplate_360ul_flat",
+            "slot": 3
+          }
+        ],
+        "steps": [
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A1"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A2"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A3"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A4"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A5"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A6"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "delay",
+            "seconds": 300,
+            "message": "Simulated incubation; no heating."
+          }
+        ]
+      },
+      {
+        "experiment_name": "PET buffer transfer timing comparison simulation",
+        "rationale": "Simulation-only plan to compare buffer transfer and incubation timing for a PETase assay concept. No enzyme, plastic substrate, organism engineering, heating, or measurement is included. No amino acid sequences are provided and no degradation results are claimed. All volumes are within pipette and well limits for software simulation only.",
+        "pipettes": [
+          {
+            "load_name": "p300_single_gen2",
+            "mount": "left",
+            "tiprack_id": "tips"
+          }
+        ],
+        "labware": [
+          {
+            "id": "tips",
+            "load_name": "opentrons_96_tiprack_300ul",
+            "slot": 1
+          },
+          {
+            "id": "buffer",
+            "load_name": "nest_12_reservoir_15ml",
+            "slot": 2
+          },
+          {
+            "id": "assay_plate",
+            "load_name": "corning_96_wellplate_360ul_flat",
+            "slot": 3
+          }
+        ],
+        "steps": [
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A1"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A2"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A3"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "delay",
+            "seconds": 300,
+            "message": "Simulated incubation set 1; no heating."
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A2"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A4"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A2"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A5"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "transfer",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A2"
+            },
+            "dest": {
+              "labware_id": "assay_plate",
+              "well": "A6"
+            },
+            "volume_ul": 150.0,
+            "mix_after": {
+              "repetitions": 3,
+              "volume_ul": 100.0
+            }
+          },
+          {
+            "action": "delay",
+            "seconds": 300,
+            "message": "Simulated incubation set 2; no heating."
+          }
+        ]
+      },
+      {
+        "experiment_name": "Six-well PET enzyme stability assay simulation",
+        "rationale": "Simulation-only layout for a six-well PET stability check with three test wells and three reference control wells. It shows buffer and liquid transfers plus a timed pause to stand in for incubation. No live enzymes are used, no heating or measurement is performed, no results are claimed, and this does not perform real laboratory work.",
+        "pipettes": [
+          {
+            "load_name": "p300_single_gen2",
+            "mount": "left",
+            "tiprack_id": "tips"
+          }
+        ],
+        "labware": [
+          {
+            "id": "tips",
+            "load_name": "opentrons_96_tiprack_300ul",
+            "slot": 1
+          },
+          {
+            "id": "buffer",
+            "load_name": "nest_12_reservoir_15ml",
+            "slot": 2
+          },
+          {
+            "id": "assay_plate",
+            "load_name": "corning_96_wellplate_360ul_flat",
+            "slot": 3
+          }
+        ],
+        "steps": [
+          {
+            "action": "distribute",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A1"
+            },
+            "dests": [
+              {
+                "labware_id": "assay_plate",
+                "well": "A1"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A2"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A3"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A4"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A5"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A6"
+              }
+            ],
+            "volume_ul": 120.0
+          },
+          {
+            "action": "distribute",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A2"
+            },
+            "dests": [
+              {
+                "labware_id": "assay_plate",
+                "well": "A1"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A2"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A3"
+              }
+            ],
+            "volume_ul": 50.0
+          },
+          {
+            "action": "distribute",
+            "source": {
+              "labware_id": "buffer",
+              "well": "A3"
+            },
+            "dests": [
+              {
+                "labware_id": "assay_plate",
+                "well": "A4"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A5"
+              },
+              {
+                "labware_id": "assay_plate",
+                "well": "A6"
+              }
+            ],
+            "volume_ul": 50.0
+          },
+          {
+            "action": "delay",
+            "seconds": 600,
+            "message": "Simulated incubation; no heating or measurement."
+          }
+        ]
+      }
+    ],
+    "refusal": {
+      "decision": "refuse",
+      "reason": "Goal requests an unrelated human clinical experiment, which is outside the allowed scope of simulation-only PET plastic degradation assay planning."
+    }
+  }
+}

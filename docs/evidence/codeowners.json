@@ -1,0 +1,21 @@
+{
+  "baseRefName": "codex/complete-biocompiler",
+  "headRefName": "codex/verify-codeowners",
+  "isDraft": false,
+  "number": 19,
+  "reviewRequests": [
+    {
+      "__typename": "User",
+      "login": "MateoDG2006"
+    },
+    {
+      "__typename": "User",
+      "login": "yukki2126"
+    },
+    {
+      "__typename": "User",
+      "login": "Xyryung"
+    }
+  ],
+  "url": "https://github.com/Xyryung/biocompiler-engine/pull/19"
+}

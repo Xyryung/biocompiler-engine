@@ -27,9 +27,15 @@ apps/web/.env*.local
 data/*
 !data/.gitkeep
 !data/README.md
+!data/synthetic/
 generated_protocols/
 *.mp4
+!docs/demo/biocompiler-demo.mp4
 *.avi
+test-results/
+playwright-report/
+artifacts/
+*.tsbuildinfo
 
 # OS / editor
 .DS_Store
