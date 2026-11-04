@@ -69,14 +69,22 @@ class VisionResult(StrictModel):
 
 
 class ProteinResult(StrictModel):
-    source: Literal["reference-only", "partner-endpoint"]
+    source: Literal["cached-esmfold", "partner-endpoint"]
     reference: str
     model: str
-    status: Literal["not-configured", "predicted"]
+    status: Literal["cached", "predicted"]
     sequence_source: str
     structure_pdb: str | None = None
+    cached: bool = False
+    prediction_url: str | None = None
+    generated_at: str | None = None
+    residue_count: int = Field(default=0, ge=0)
+    sequence_sha256: str = ""
+    structure_sha256: str = ""
+    cache_lookup_ms: float | None = Field(default=None, ge=0)
     latency_ms: float | None = None
     cost_usd: float | None = None
+    cost_basis: str = "Configured partner estimate; internal provider cost is unknown."
     note: str
 
 

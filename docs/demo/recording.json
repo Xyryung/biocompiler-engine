@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-11-04T01:15:11.496Z",
+  "timezone": "America/Panama",
+  "width": 1920,
+  "height": 1080,
+  "duration_target_seconds": 165,
+  "provider": "mock",
+  "simulation": "real local Opentrons 8.8.2",
+  "imagery": "synthetic",
+  "narration": "Windows system voice, synthesized",
+  "scenarios": [
+    "successful compile",
+    "injected failure and recovery",
+    "safety refusal"
+  ],
+  "protein_prediction": "Real ESMFold reference prediction, explicitly cached"
+}

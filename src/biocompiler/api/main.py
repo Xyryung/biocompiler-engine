@@ -10,9 +10,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from biocompiler.bio.protein import predict_reference
 from biocompiler.bio.safety import SafetyRefusal
 from biocompiler.config import get_settings
-from biocompiler.contracts.results import CompileResult
+from biocompiler.contracts.results import CompileResult, ProteinResult
 from biocompiler.pipeline import PipelineError, run_pipeline
 from biocompiler.providers.factory import get_provider
 from biocompiler.sandbox.runner import get_simulator
@@ -88,6 +89,15 @@ async def compile_goal(payload: CompileRequest, request: Request):
         status_code=200 if result.status == "success" else 422,
         content=result.model_dump(mode="json"),
     )
+
+
+@app.get("/proteins/reference", response_model=ProteinResult)
+async def protein_reference(request: Request):
+    """Fixed curated reference only; offline mode serves the verified model cache."""
+    try:
+        return await predict_reference(request.app.state.settings)
+    except Exception as exc:
+        raise PipelineError("protein", exc) from exc
 
 
 @app.exception_handler(SafetyRefusal)

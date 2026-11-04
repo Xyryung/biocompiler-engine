@@ -46,7 +46,8 @@ def test_end_to_end_real_simulation_under_30_seconds(client):
     assert len(run["vision"]["masks"]) == len(run["vision"]["series"]) == 96
     assert run["vision"]["adjustments"][0]["well"] == "A3"
     assert run["vision"]["adjustments"][0]["applied"] is False
-    assert run["protein"]["status"] == "not-configured"
+    assert run["protein"]["status"] == "cached"
+    assert run["protein"]["residue_count"] == 290
     assert time.perf_counter() - started < 30
 
 
@@ -75,6 +76,10 @@ def test_health_openapi_and_request_errors(client):
     assert client.get("/health").json()["simulation_only"] is True
     assert client.get("/docs").status_code == 200
     assert "/compile" in client.get("/openapi.json").json()["paths"]
+    prediction = client.get("/proteins/reference")
+    assert prediction.status_code == 200
+    assert prediction.json()["cached"] is True
+    assert prediction.json()["residue_count"] == 290
     for payload in ({"goal": " "}, {"goal": GOAL, "skip_safety": True}, {"goal": "x" * 2001}):
         result = client.post("/compile", json=payload)
         assert result.status_code == 422

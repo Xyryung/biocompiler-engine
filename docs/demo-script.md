@@ -13,7 +13,7 @@ mock" explicitly; do not imply live Muse Spark, SAM, or ESMFold inference.
 | 1:08–1:25 | Generated code | "The protocol declares metadata, labware, instruments, and tip handling. The language model integration plans and explains; it never invents protein sequences." |
 | 1:25–1:45 | Recovery option, second compile | "Here we inject a deliberate invalid well. Attempt one fails, its diagnostic returns to the compiler, and attempt two passes. The loop stops after at most three attempts." |
 | 1:45–2:13 | Simulation and vision panes | "The output is real simulator evidence. Ninety-six masks map to named wells. This fixed-camera synthetic sequence tracks colour over time. A3 crosses the review threshold. The signal proposes review; it does not change a protocol automatically." |
-| 2:13–2:30 | Protein provenance | "The reference sequence is curated from UniProt. ESMFold hosting remains an external integration; this offline take does not claim a protein prediction or a validated variant." |
+| 2:13–2:30 | Protein provenance | "This is a real cached ESMFold reference prediction. All 290 residues match the curated UniProt sequence. The dashboard marks it as cached and downloads its PDB. It is not a validated new variant." |
 | 2:30–2:42 | Safety refusal | "An unrelated request is stopped before planning or compilation. An uncertain or unavailable classifier also fails closed." |
 | 2:42–2:45 | Dashboard scope badge | "A reproducible bridge from intent to simulation evidence." |
 
@@ -23,8 +23,9 @@ Use `apps/web/scripts/record-demo.mjs` with both servers running. It records the
 actual local dashboard, including normal compilation, recovery, and refusal;
 it does not replace API responses. `scripts/narrate-demo.ps1` creates optional
 Windows system-voice narration. `scripts/render_demo.py` combines the recording
-and narration into an MP4 and checks duration. Generated media lives in ignored
-`artifacts/demo/`; preserve it separately for submission.
+and narration into an MP4 and checks duration. Raw captures live in ignored
+`artifacts/demo/`. The verified final take and its media metadata are committed
+under `docs/demo/`, so the whole team can download them from the repository.
 
 The requested November 2 backup date has already passed as of November 3, 2026.
 Any recording made now must carry its actual date. Review pronunciation, timing,

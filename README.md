@@ -71,7 +71,7 @@ exhausted simulation attempts return HTTP 422 with the full attempt history.
 | Scope classifier | conservative keyword demo gate | structured Muse Spark classifier, fails closed |
 | Well segmentation | exact known synthetic geometry | SAM 3.1 Responses stream, official `meta-sam-parser` |
 | Simulation | real local Opentrons subprocess | Modal sandbox, cached image, network blocked |
-| Protein structure | curated UniProt reference only; no prediction | HTTPS partner ESMFold adapter |
+| Protein structure | verified cached ESMFold reference prediction | HTTPS partner ESMFold adapter |
 
 To select Meta, set `BIOCOMPILER_PROVIDER=meta` and `META_API_KEY` (or
 `MODEL_API_KEY`) in `.env`. `META_BASE_URL`, `META_MODEL`, and `META_SAM_MODEL`
@@ -88,7 +88,17 @@ without API credentials. It is **not an OS security boundary**. The Modal option
 adds filesystem/process isolation and blocks network access. Neither path
 connects to robot hardware.
 
-For proteins, deploy an ESMFold inference adapter on your partner, then set
+`GET /proteins/reference` returns the real cached ESMFold prediction used by the
+offline demo: 290 residues matching UniProt PETase A0A0K8P6T7, with sequence and
+structure checksums, original request latency, and cost provenance. The dashboard
+labels it **CACHED ESMFOLD PREDICTION**, plots the predicted backbone, and downloads
+the PDB. It is the cached fallback explicitly permitted by issue #9.
+
+Regenerate it with `uv run python scripts/cache_protein_prediction.py`, which
+calls the [public ESMFold API](https://github.com/facebookresearch/esm#esmfold)
+and validates every residue before replacing the cache. Normal runs stay offline.
+
+For fresh partner inference, deploy an ESMFold adapter, then set
 `PROTEIN_ENDPOINT` and `PROTEIN_API_KEY`. Contract:
 
 ```json
@@ -98,8 +108,10 @@ POST {"sequence": "<curated UniProt reference>"}
 
 The server selects the reference sequence; Muse Spark cannot supply one. Returned
 provenance includes source, model, latency, and an optional configured cost
-estimate (`PROTEIN_COST_USD`). No cached prediction is bundled, and no model-hosting
-or live latency/cost claim is made without a successful authenticated call.
+estimate (`PROTEIN_COST_USD`). Cached results preserve the original measured
+request latency; they do not report that number as a new inference. The public
+cache request incurred no charge to this project; internal service compute cost
+is not published. The structure is a reference prediction, not a new variant.
 
 The safety gate is an application scope restriction for this simulated demo,
 not a validated biological risk assessment. Real experiments require expert
@@ -131,10 +143,14 @@ and desktop/mobile browser scenarios. It uploads a dashboard screenshot.
 
 `uv run python scripts/generate_fixtures.py` regenerates packaged and test specs;
 `uv run python scripts/generate_plate_data.py` regenerates offline PNG frames.
+`uv run python scripts/verify_live_meta.py` performs bounded real Meta acceptance
+checks for three plans, protocol simulation, safety refusal, and SAM stability
+across three frames. It requires `META_API_KEY` and never falls back to mocks.
 
 ## Demo and submission
 
 - [Three-minute recording script](docs/demo-script.md)
+- [Recorded 2:45 demo](docs/demo/biocompiler-demo.mp4) (1080p, synthesized narration)
 - [Submission checklist and unresolved external requirements](docs/submission-checklist.md)
 - [Issue acceptance matrix](docs/issue-status.md)
 - [Verification evidence](docs/verification.md)

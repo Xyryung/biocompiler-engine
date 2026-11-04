@@ -24,6 +24,17 @@ test("one request populates all five panes from the real backend", async ({
   }
   await expect(page.getByAltText(/96-well plate segmentation/)).toBeVisible();
   await expect(page.getByText("OFFLINE MOCK", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("CACHED ESMFOLD PREDICTION", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("img", {
+      name: "ESMFold predicted backbone, XY projection",
+    }),
+  ).toBeVisible();
+  const pdbDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Download predicted PDB" }).click();
+  expect((await pdbDownload).suggestedFilename()).toBe("petase-esmfold.pdb");
   await page.getByRole("button", { name: "JSON", exact: true }).click();
   await expect(page.locator(".specjson")).toContainText('"experiment_name"');
   await page.getByRole("combobox").selectOption("A1");

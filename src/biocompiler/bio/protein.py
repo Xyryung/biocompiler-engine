@@ -1,5 +1,6 @@
 """Partner ESMFold adapter. The LLM never supplies an amino acid sequence."""
 
+import hashlib
 import json
 import time
 from importlib.resources import files
@@ -8,6 +9,7 @@ from urllib.parse import urlparse
 import httpx
 from pydantic import BaseModel, ConfigDict, Field
 
+from biocompiler.bio.structures import validate_structure
 from biocompiler.config import Settings
 from biocompiler.contracts.results import ProteinResult
 
@@ -19,6 +21,7 @@ class PartnerPrediction(BaseModel):
 
 
 async def predict_reference(settings: Settings) -> ProteinResult:
+    started = time.perf_counter()
     reference = json.loads(
         files("biocompiler")
         .joinpath("resources", "petase_reference.json")
@@ -26,13 +29,36 @@ async def predict_reference(settings: Settings) -> ProteinResult:
     )
     common = {"reference": reference["accession"], "sequence_source": reference["source"]}
     if not settings.protein_endpoint:
+        resource = files("biocompiler").joinpath("resources")
+        metadata = json.loads(resource.joinpath("petase_esmfold.json").read_text(encoding="utf-8"))
+        pdb = resource.joinpath("petase_esmfold.pdb").read_text(encoding="utf-8")
+        sequence_hash = hashlib.sha256(reference["sequence"].encode()).hexdigest()
+        structure_hash = hashlib.sha256(pdb.encode()).hexdigest()
+        if (
+            metadata["sequence_sha256"] != sequence_hash
+            or metadata["structure_sha256"] != structure_hash
+        ):
+            raise ValueError("Cached ESMFold prediction integrity check failed")
+        count = validate_structure(pdb, reference["sequence"])
         return ProteinResult(
             **common,
-            source="reference-only",
-            model="none",
-            status="not-configured",
-            note="Curated UniProt PETase reference only. No ESM prediction or designed variant "
-            "is available in offline mode. Connect a partner endpoint to obtain one.",
+            source="cached-esmfold",
+            model=metadata["model"],
+            status="cached",
+            cached=True,
+            structure_pdb=pdb,
+            prediction_url=metadata["endpoint"],
+            generated_at=metadata["generated_at"],
+            residue_count=count,
+            sequence_sha256=sequence_hash,
+            structure_sha256=structure_hash,
+            latency_ms=metadata["request_latency_ms"],
+            cost_usd=metadata["client_cost_usd"],
+            cost_basis=metadata["cost_basis"],
+            cache_lookup_ms=(time.perf_counter() - started) * 1000,
+            note="Cached ESMFold prediction for the curated UniProt PETase reference. "
+            "This is a real previously fetched model result, not live inference during this run. "
+            "No new variant or experimental enzyme-performance claim is made.",
         )
     if urlparse(settings.protein_endpoint).scheme != "https":
         raise ValueError("PROTEIN_ENDPOINT must use HTTPS")
@@ -47,14 +73,17 @@ async def predict_reference(settings: Settings) -> ProteinResult:
         )
         response.raise_for_status()
         prediction = PartnerPrediction.model_validate(response.json())
-    if "ATOM " not in prediction.structure_pdb:
-        raise ValueError("Protein partner did not return an atom-containing PDB structure")
+    count = validate_structure(prediction.structure_pdb, reference["sequence"])
     return ProteinResult(
         **common,
         source="partner-endpoint",
         model=prediction.model,
         status="predicted",
         structure_pdb=prediction.structure_pdb,
+        prediction_url=settings.protein_endpoint,
+        residue_count=count,
+        sequence_sha256=hashlib.sha256(reference["sequence"].encode()).hexdigest(),
+        structure_sha256=hashlib.sha256(prediction.structure_pdb.encode()).hexdigest(),
         latency_ms=(time.perf_counter() - start) * 1000,
         cost_usd=settings.protein_cost_usd,
         note="Partner prediction of the curated reference sequence, not a validated "

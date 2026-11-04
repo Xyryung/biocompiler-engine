@@ -42,15 +42,17 @@ Relevant requirements:
 - [x] Existing repository collaborators have write/admin access.
 - [x] Confirm all four accounts; ownership is shared without separate engineering roles.
 - [x] Attribute the confirmed team by their supplied GitHub identities in LICENSE.
-- [ ] Verify review auto-routing after CODEOWNERS is merged to the base branch.
+- [x] Verify automatic review routing: test PR #19 requested MateoDG2006, yukki2126,
+      and Xyryung automatically against the shared-CODEOWNERS base branch.
 - [ ] Obtain the one human PR approval required by the existing main ruleset.
 
 ## Live evidence still required
 
 - [ ] Authenticated Muse Spark call succeeds using the configured team account.
 - [ ] Authenticated SAM 3.1 call returns 96 mapped masks for the synthetic frame.
-- [ ] ESMFold partner endpoint is deployed; record measured latency and actual cost.
-- [ ] Optional Modal cold/warm timings measured, or explicitly use the tested local fallback.
+- [x] Obtain a real ESMFold prediction and bundle the issue #9 cached fallback;
+      record original request latency and the public endpoint's client cost.
+- [x] Explicitly use and benchmark the actual local Opentrons fallback permitted by #11.
 - [ ] Watch the complete demo video and verify intelligible audio and duration.
 
 Credentials were unavailable during implementation. Unit tests validate adapters

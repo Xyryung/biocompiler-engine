@@ -30,6 +30,7 @@ data/*
 !data/synthetic/
 generated_protocols/
 *.mp4
+!docs/demo/biocompiler-demo.mp4
 *.avi
 test-results/
 playwright-report/

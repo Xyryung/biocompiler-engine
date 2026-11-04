@@ -51,5 +51,11 @@ export type Run = {
     latency_ms: number | null;
     cost_usd: number | null;
     structure_pdb: string | null;
+    cached: boolean;
+    prediction_url: string | null;
+    generated_at: string | null;
+    residue_count: number;
+    cache_lookup_ms: number | null;
+    cost_basis: string;
   };
 };

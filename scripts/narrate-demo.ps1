@@ -13,7 +13,7 @@ $segments = @(
     @{start=90; text='Now we inject a deliberately invalid tip well. The first attempt fails. Its diagnostic goes back to the compiler, and the second attempt passes. The cap is three attempts.'},
     @{start=106; text='These are actual simulator logs, including both the failed attempt and the repair. There is no connection to laboratory hardware.'},
     @{start=118; text='Ninety-six masks map to named wells. This fixed-camera synthetic sequence tracks colour over time. Well A three crosses the review threshold. The signal suggests review; it does not automatically change a protocol.'},
-    @{start=135; text='The protein reference is curated from UniProt. ESMFold hosting needs an external partner endpoint. This offline take claims no protein prediction, new variant, or measured enzyme performance.'},
+    @{start=135; text='This is a real ESMFold reference prediction, cached from the public endpoint. Its residues match the UniProt sequence. Download the predicted structure here. It is not a new variant or measured enzyme performance.'},
     @{start=150; text='An unrelated request is stopped before planning or compilation. An uncertain or unavailable classifier also fails closed. BioCompiler connects intent to reproducible simulation evidence.'}
 )
 $speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer

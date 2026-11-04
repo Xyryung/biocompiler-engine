@@ -60,6 +60,45 @@ function Chart({ samples }: { samples: Sample[] }) {
   );
 }
 
+function ProteinBackbone({ pdb }: { pdb: string }) {
+  const atoms = pdb
+    .split("\n")
+    .filter(
+      (line) => line.startsWith("ATOM  ") && line.slice(12, 16).trim() === "CA",
+    )
+    .map((line) => [Number(line.slice(30, 38)), Number(line.slice(38, 46))]);
+  if (!atoms.length) return null;
+  const xs = atoms.map((point) => point[0]),
+    ys = atoms.map((point) => point[1]);
+  const left = Math.min(...xs),
+    top = Math.min(...ys);
+  const scale = Math.min(
+    210 / Math.max(1, Math.max(...xs) - left),
+    105 / Math.max(1, Math.max(...ys) - top),
+  );
+  const points = atoms
+    .map(([x, y]) => `${15 + (x - left) * scale},${10 + (y - top) * scale}`)
+    .join(" ");
+  return (
+    <svg
+      viewBox="0 0 240 130"
+      className="protein-backbone"
+      role="img"
+      aria-label="ESMFold predicted backbone, XY projection"
+    >
+      <polyline
+        points={points}
+        fill="none"
+        stroke="#91e3c4"
+        strokeWidth="1.1"
+      />
+      <text x="5" y="126" fill="#95abb1" fontSize="8">
+        Predicted backbone · XY projection
+      </text>
+    </svg>
+  );
+}
+
 export default function Dashboard() {
   const [goal, setGoal] = useState(EXAMPLE);
   const [demoFailure, setDemoFailure] = useState(false);
@@ -357,7 +396,17 @@ export default function Dashboard() {
                     <div className="safetyline">✓ {run.safety.reason}</div>
                     <div className="provenance">
                       <strong>Protein model provenance</strong>
+                      <div>
+                        <span className="tag">
+                          {run.protein.cached
+                            ? "CACHED ESMFOLD PREDICTION"
+                            : "LIVE PARTNER PREDICTION"}
+                        </span>
+                      </div>
                       <p>{run.protein.note}</p>
+                      {run.protein.structure_pdb && (
+                        <ProteinBackbone pdb={run.protein.structure_pdb} />
+                      )}
                       <a
                         href={run.protein.sequence_source}
                         target="_blank"
@@ -365,14 +414,29 @@ export default function Dashboard() {
                       >
                         UniProt {run.protein.reference} ↗
                       </a>
-                      {run.protein.status === "predicted" && (
+                      {run.protein.structure_pdb && (
                         <p>
-                          {run.protein.model} ·{" "}
-                          {run.protein.latency_ms?.toFixed(0)} ms ·{" "}
+                          {run.protein.model} · {run.protein.residue_count}{" "}
+                          residues · {run.protein.latency_ms?.toFixed(0)} ms{" "}
+                          {run.protein.cached ? "original request" : "request"}{" "}
+                          ·{" "}
                           {run.protein.cost_usd === null
                             ? "cost not configured"
-                            : `$${run.protein.cost_usd.toFixed(4)} estimated`}
+                            : `$${run.protein.cost_usd.toFixed(4)} client cost`}
                         </p>
+                      )}
+                      <p>{run.protein.cost_basis}</p>
+                      {run.protein.structure_pdb && (
+                        <button
+                          onClick={() =>
+                            download(
+                              "petase-esmfold.pdb",
+                              run.protein.structure_pdb!,
+                            )
+                          }
+                        >
+                          Download predicted PDB ↓
+                        </button>
                       )}
                     </div>
                   </div>

@@ -26,4 +26,12 @@ The curated PETase sequence in `src/biocompiler/resources/petase_reference.json`
 comes from [UniProt A0A0K8P6T7](https://www.uniprot.org/uniprotkb/A0A0K8P6T7/entry),
 retrieved on 2026-11-03. UniProt data is licensed under
 [CC BY 4.0](https://www.uniprot.org/help/license). It is a known reference sequence,
-not an LLM-designed sequence, cached ESM prediction, or new variant.
+not an LLM-designed sequence or new variant.
+
+The accompanying `petase_esmfold.pdb` is an actual prediction fetched from the
+public endpoint documented by [Meta's ESM repository](https://github.com/facebookresearch/esm#esmfold).
+`petase_esmfold.json` records its time, measured request latency, hashes, and
+client cost. All 290 PDB residues are checked against the curated sequence.
+It is explicitly served as a **cached** model result. The ESM software is MIT
+licensed; reference-sequence attribution remains CC BY 4.0. The prediction is not
+experimental evidence or a claim of thermostability.

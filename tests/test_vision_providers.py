@@ -127,7 +127,9 @@ async def test_meta_adapter_uses_installed_sdk_and_strict_wire_schema(monkeypatc
 
 async def test_protein_endpoint_reference_and_provenance(monkeypatch):
     offline = await predict_reference(Settings(_env_file=None))
-    assert offline.source == "reference-only" and offline.structure_pdb is None
+    assert offline.source == "cached-esmfold" and offline.cached
+    assert offline.structure_pdb and offline.residue_count == 290
+    assert offline.cache_lookup_ms >= 0 and offline.latency_ms > 0
     calls = []
 
     async def post(self, url, **kwargs):
@@ -135,7 +137,7 @@ async def test_protein_endpoint_reference_and_provenance(monkeypatch):
         assert len(kwargs["json"]["sequence"]) == 290
         return httpx.Response(
             200,
-            json={"model": "esmfold-v1", "structure_pdb": "ATOM " + "example-coordinates" * 5},
+            json={"model": "esmfold-v1", "structure_pdb": offline.structure_pdb},
             request=httpx.Request("POST", url),
         )
 

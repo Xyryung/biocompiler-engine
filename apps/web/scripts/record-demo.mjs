@@ -88,6 +88,8 @@ await writeFile(
       provider: "mock",
       simulation: "real local Opentrons 8.8.2",
       imagery: "synthetic",
+      protein_prediction:
+        "Real ESMFold reference prediction, explicitly cached",
       narration: "Windows system voice, synthesized",
       scenarios: [
         "successful compile",

@@ -1,0 +1,15 @@
+{
+  "reference": "A0A0K8P6T7",
+  "model": "esmfold-v1",
+  "endpoint": "https://api.esmatlas.com/foldSequence/v1/pdb/",
+  "generated_at": "2026-11-04T01:07:47.960159+00:00",
+  "request_latency_ms": 735.779,
+  "residue_count": 290,
+  "sequence_sha256": "12c59fe9dab495ee536f1c2a5fc28c66e212192096c2351044d4dc139042f5af",
+  "structure_sha256": "eac1d4b341205eeecf503e678ebce95c93510da893a42ac6e6f3bc11f676460e",
+  "client_cost_usd": 0.0,
+  "cost_basis": "Public unauthenticated request; no billed project account. The service's internal compute cost is not published.",
+  "method_source": "https://github.com/facebookresearch/esm#esmfold",
+  "sequence_source": "https://www.uniprot.org/uniprotkb/A0A0K8P6T7/entry",
+  "note": "Real ESMFold reference prediction, cached for the issue #9 fallback. Not a designed variant or experimental validation."
+}
