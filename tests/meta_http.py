@@ -132,17 +132,17 @@ def segmentation(text, *, terminal="completed"):
     return httpx2.Response(200, headers={"content-type": "text/event-stream"}, stream=body), body
 
 
-def sam_plate_text():
+def sam_plate_text(object_ids=None):
     from biocompiler.vision.synthetic import HEIGHT, WIDTH, center
 
     records = []
-    for row in range(8):
-        for col in range(12):
-            x, y = center(row, col)
-            # Small, lossless test masks with sparse IDs in reverse response order.
-            records.append(
-                f"{1000 + (row * 12 + col) * 7}"
-                f"<|box;x1={x - 2};y1={y - 2};x2={x + 2};y2={y + 2};w={WIDTH};h={HEIGHT}|>"
-                "<|mask;x=0;y=0;data=5,5,!!!!!(QO(0lu8?|>"
-            )
+    for object_id in object_ids or range(1, 97):
+        row, col = divmod(object_id - 1, 12)
+        x, y = center(row, col)
+        # Small, lossless test masks in reverse response order.
+        records.append(
+            f"{object_id}"
+            f"<|box;x1={x - 2};y1={y - 2};x2={x + 2};y2={y + 2};w={WIDTH};h={HEIGHT}|>"
+            "<|mask;x=0;y=0;data=5,5,!!!!!(QO(0lu8?|>"
+        )
     return "<0f>" + ",".join(reversed(records)) + "\n"

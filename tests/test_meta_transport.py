@@ -1,5 +1,6 @@
 import base64
 import json
+import re
 
 import httpx2
 import pytest
@@ -128,10 +129,13 @@ async def test_compiler_repairs_real_sdk_output_using_actual_simulator_error():
         await provider.client.close()
 
 
-async def test_real_sdk_sam_stream_maps_96_sparse_ids_and_closes_transport():
+async def test_real_sdk_sam_stream_maps_96_batched_ids_and_closes_transport():
     server = MetaHTTP()
-    response, body = segmentation(sam_plate_text())
-    server.replies.append(response)
+    bodies = []
+    for offset in range(0, 96, 16):
+        response, body = segmentation(sam_plate_text(range(offset + 1, offset + 17)))
+        server.replies.append(response)
+        bodies.append(body)
     provider = server.provider()
     image = png(frame(0))
     try:
@@ -143,7 +147,15 @@ async def test_real_sdk_sam_stream_maps_96_sparse_ids_and_closes_transport():
         assert request["metadata"]["mask_encoding"] == "one_bit"
         data_url = request["input"][0]["content"][1]["image_url"]
         assert base64.b64decode(data_url.split(",", 1)[1]) == image
-        assert body.closed
+        assert len(server.requests) == 6
+        prompted_ids = []
+        for _, request in server.requests:
+            prompt = request["input"][0]["content"][0]["text"]
+            ids = re.findall(r"(?:<0f>|,)(\d+)<\|box;", prompt)
+            assert len(ids) == 16
+            prompted_ids.extend(ids)
+        assert len(set(prompted_ids)) == 96
+        assert all(body.closed for body in bodies)
     finally:
         await provider.client.close()
 

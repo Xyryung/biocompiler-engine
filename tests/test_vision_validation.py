@@ -52,7 +52,7 @@ async def test_pipeline_refuses_repeated_regions_even_from_a_custom_provider():
 
 @pytest.mark.parametrize("corruption", ["duplicate", "wrong-raster-size", "out-of-bounds"])
 async def test_real_sam_stream_rejects_invalid_detection_geometry(corruption):
-    text = sam_plate_text()
+    text = sam_plate_text(range(1, 17))
     boxes = re.findall(r"<\|box;.*?\|>", text)
     if corruption == "duplicate":
         replacement = boxes[1]
@@ -63,10 +63,26 @@ async def test_real_sam_stream_rejects_invalid_detection_geometry(corruption):
     server = MetaHTTP()
     response, body = segmentation(text.replace(boxes[0], replacement, 1))
     server.replies.append(response)
+    for offset in range(16, 96, 16):
+        reply, _ = segmentation(sam_plate_text(range(offset + 1, offset + 17)))
+        server.replies.append(reply)
     provider = server.provider()
     try:
         with pytest.raises(ValueError):
             await provider.segment(png(frame(0)), "plate")
         assert body.closed
+    finally:
+        await provider.client.close()
+
+
+async def test_unknown_calibration_size_fails_before_any_paid_call():
+    from PIL import Image
+
+    server = MetaHTTP()
+    provider = server.provider()
+    try:
+        with pytest.raises(ValueError, match="calibrated"):
+            await provider.segment(png(Image.new("RGB", (320, 220))), "plate")
+        assert not server.requests
     finally:
         await provider.client.close()

@@ -7,8 +7,48 @@ import numpy as np
 from PIL import Image
 
 from biocompiler.contracts.results import WellMask
-from biocompiler.vision.synthetic import encode_rle
+from biocompiler.vision.synthetic import HEIGHT, RADIUS, WIDTH, center, encode_rle
 from biocompiler.vision.validation import validate_plate_masks
+
+
+def calibrated_plate_prompts(image: bytes) -> tuple[tuple[str, frozenset[str]], ...]:
+    """Prompt the known fixed-camera plate in API-sized groups of at most 16 wells."""
+    from meta_sam_parser import (
+        FramePrompt,
+        PromptBox,
+        PromptObject,
+        PromptPoint,
+        build_object_prompt,
+    )
+
+    with Image.open(io.BytesIO(image)) as source:
+        if source.size != (WIDTH, HEIGHT):
+            raise ValueError("SAM plate prompts require the calibrated synthetic image size")
+    objects = []
+    for row in range(8):
+        for col in range(12):
+            x, y = center(row, col)
+            objects.append(
+                PromptObject(
+                    id=row * 12 + col + 1,
+                    prompts=[
+                        FramePrompt(
+                            box=PromptBox(x - RADIUS, y - RADIUS, x + RADIUS + 1, y + RADIUS + 1),
+                            points=[PromptPoint(x, y)],
+                        )
+                    ],
+                )
+            )
+    batches = []
+    for offset in range(0, len(objects), 16):
+        group = objects[offset : offset + 16]
+        batches.append(
+            (
+                build_object_prompt(size=(WIDTH, HEIGHT), objects=group),
+                frozenset(str(obj.id) for obj in group),
+            )
+        )
+    return tuple(batches)
 
 
 def map_records(records: tuple, image: bytes, labware_id: str) -> tuple[WellMask, ...]:

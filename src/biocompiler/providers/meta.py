@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import base64
 import json
+from typing import TYPE_CHECKING
 
 from openai import AsyncOpenAI
 from openai.types.responses import ResponseInputParam
@@ -10,6 +13,9 @@ from biocompiler.compiler.codegen import COMPILER_PROMPT
 from biocompiler.config import Settings
 from biocompiler.contracts.results import SafetyDecision, WellMask
 from biocompiler.contracts.spec import ExperimentSpec
+
+if TYPE_CHECKING:
+    from meta_sam_parser import SegmentationRecord
 
 
 def strict_schema(model: type[BaseModel]) -> dict:
@@ -117,13 +123,25 @@ class MetaProvider:
         )
 
     async def segment(self, image: bytes, labware_id: str) -> tuple[WellMask, ...]:
+        from meta_sam_parser import SegmentationMaskRecord
+
+        from biocompiler.vision.sam import calibrated_plate_prompts, map_records
+
+        records: list[SegmentationRecord] = []
+        for prompt, expected in calibrated_plate_prompts(image):
+            batch = await self._segment_batch(image, prompt)
+            returned = {r.object_id for r in batch if isinstance(r, SegmentationMaskRecord)}
+            if returned != expected:
+                raise ValueError("SAM did not return every prompted well in its batch")
+            records.extend(batch)
+        return map_records(tuple(records), image, labware_id)
+
+    async def _segment_batch(self, image: bytes, prompt: str) -> tuple[SegmentationRecord, ...]:
         from meta_sam_parser import (
             CompletedOutcome,
             image_segmentation_format,
             parse_responses_stream,
         )
-
-        from biocompiler.vision.sam import map_records
 
         media_input: ResponseInputParam = [
             {
@@ -132,7 +150,7 @@ class MetaProvider:
                 "content": [
                     {
                         "type": "input_text",
-                        "text": "individual circular wells of the microtiter plate",
+                        "text": prompt,
                     },
                     {
                         "type": "input_image",
@@ -154,4 +172,4 @@ class MetaProvider:
             raise ValueError("SAM segmentation did not complete")
         if any(diagnostic.severity == "error" for diagnostic in result.diagnostics):
             raise ValueError("SAM returned malformed segmentation records")
-        return map_records(result.records, image, labware_id)
+        return result.records

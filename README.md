@@ -78,8 +78,16 @@ To select Meta, set `BIOCOMPILER_PROVIDER=meta` and `META_API_KEY` (or
 configure the service. Requests use bounded timeouts and no hidden SDK retries.
 See Meta's [structured output](https://dev.meta.ai/docs/cookbook/structured-output)
 and [SAM segmentation](https://dev.meta.ai/docs/media-segmentation) documentation.
-Live calls require your credentials and have **not** been validated by the
-offline test suite. No silent fallback substitutes mock outputs for live failures.
+Live calls require your credentials. Authenticated Muse Spark and SAM acceptance
+results are recorded in [verification evidence](docs/verification.md), including a
+successful real-provider `POST /compile`. Offline tests remain separate from live
+availability checks. No silent fallback substitutes mock outputs for live failures.
+
+SAM uses the known calibration of the synthetic plate, with box and point prompts
+in six groups of at most 16 objects per image, matching the API's prompted-object
+limit. It predicts the masks rather than reusing offline geometry masks. The
+image dimensions must match the declared fixed-camera calibration; this path does
+not claim automatic plate localization in arbitrary images.
 
 For Modal, set `BIOCOMPILER_SIMULATOR=modal` and authenticate with `modal setup`
 or the documented Modal token environment variables. The local simulator accepts

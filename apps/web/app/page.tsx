@@ -554,7 +554,11 @@ export default function Dashboard() {
                         <i className="dot amber" />
                         Review suggested
                       </span>
-                      <span>{run.vision.source}</span>
+                      <span>
+                        {run.vision.source === "meta-sam-3.1"
+                          ? "SAM 3.1 · calibrated plate"
+                          : run.vision.source}
+                      </span>
                     </div>
                   </div>
                   <div className="charthead">

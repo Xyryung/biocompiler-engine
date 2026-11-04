@@ -26,7 +26,7 @@ Relevant requirements:
 - [ ] Confirm each member's individual eligibility, acceptance, and agreement to the rules.
 - [ ] Select the authorized submission representative and complete all portal fields.
 - [ ] Confirm repository/judge access and video requirements in the submission form.
-- [ ] Obtain live Meta model evidence for the submission.
+- [x] Obtain authenticated Muse Spark and SAM model evidence for the submission.
 - [ ] Confirm dependency license compliance, including the upstream SAM License.
 - [ ] Complete the actual submission in the participant portal.
 
@@ -46,14 +46,16 @@ Relevant requirements:
       and Xyryung automatically against the shared-CODEOWNERS base branch.
 - [ ] Obtain the one human PR approval required by the existing main ruleset.
 
-## Live evidence still required
+## Model and simulation evidence
 
-- [ ] Authenticated Muse Spark call succeeds using the configured team account.
-- [ ] Authenticated SAM 3.1 call returns 96 mapped masks for the synthetic frame.
+- [x] Authenticated Muse Spark calls produce three valid plans, a refusal and simulated code.
+- [x] Authenticated SAM 3.1 returns 96 mapped masks in three calibrated frames with stable masks.
 - [x] Obtain a real ESMFold prediction and bundle the issue #9 cached fallback;
       record original request latency and the public endpoint's client cost.
 - [x] Explicitly use and benchmark the actual local Opentrons fallback permitted by #11.
 - [ ] Watch the complete demo video and verify intelligible audio and duration.
 
-Credentials were unavailable during implementation. Unit tests validate adapters
-using test responses; they are not evidence of authenticated service availability.
+Live stage reports and the full real-provider API response are committed under
+`docs/evidence/`. Credentials remain in ignored `.env`, never in the repository.
+The recorded demo intentionally uses offline planning; the separate live evidence
+establishes authenticated model availability without changing that video's provenance.
