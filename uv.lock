@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = "==3.12.*"
 
 [[package]]
@@ -161,6 +161,7 @@ source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
+    { name = "meta-sam-parser" },
     { name = "numpy" },
     { name = "openai" },
     { name = "opentrons" },
@@ -180,9 +181,6 @@ bio = [
 sandbox = [
     { name = "modal" },
 ]
-vision = [
-    { name = "meta-sam-parser" },
-]
 
 [package.dev-dependencies]
 dev = [
@@ -198,7 +196,7 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115" },
     { name = "httpx", specifier = ">=0.27" },
-    { name = "meta-sam-parser", marker = "extra == 'vision'", specifier = ">=0.1.0" },
+    { name = "meta-sam-parser", specifier = ">=0.1.0" },
     { name = "modal", marker = "extra == 'sandbox'", specifier = ">=0.67" },
     { name = "numpy", specifier = ">=1.26.4,<2" },
     { name = "numpy", marker = "extra == 'bio'", specifier = ">=1.26.4,<2" },
@@ -212,7 +210,7 @@ requires-dist = [
     { name = "typer", specifier = ">=0.15" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32" },
 ]
-provides-extras = ["bio", "sandbox", "vision"]
+provides-extras = ["bio", "sandbox"]
 
 [package.metadata.requires-dev]
 dev = [

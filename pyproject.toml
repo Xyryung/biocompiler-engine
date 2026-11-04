@@ -17,6 +17,7 @@ dependencies = [
     "opentrons==8.8.2",
     "numpy>=1.26.4,<2",
     "pillow>=11.0",
+    "meta-sam-parser>=0.1.0",
 ]
 
 [project.optional-dependencies]
@@ -25,9 +26,6 @@ bio = [
 ]
 sandbox = [
     "modal>=0.67",
-]
-vision = [
-    "meta-sam-parser>=0.1.0",
 ]
 
 [dependency-groups]
