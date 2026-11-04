@@ -1,12 +1,3 @@
-# Repository owner is the review fallback until lane ownership is confirmed.
-* @Xyryung
-
-# Bio/API issue ownership is recorded on issues #2 and #8.
-/src/biocompiler/bio/ @MateoDG2006
-/src/biocompiler/api/ @MateoDG2006
-/src/biocompiler/contracts/ @Xyryung
-/src/biocompiler/providers/ @Xyryung
-/src/biocompiler/compiler/ @Xyryung
-/src/biocompiler/sandbox/ @Xyryung
-/src/biocompiler/vision/ @Xyryung
-/apps/web/ @Xyryung
+# The confirmed four-person team shares ownership across the entire repository.
+# There are no separate engineering roles or lane owners.
+* @MateoDG2006 @yukki2126 @GusEh06 @Xyryung

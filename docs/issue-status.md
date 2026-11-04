@@ -9,8 +9,8 @@ service verification. Do not close partially satisfied issues as complete.
 | #1 Provider interface | Async protocol, packaged mock fixtures, Meta adapter, factory tests | Successful authenticated Meta call |
 | #2 FastAPI | Compile, health, OpenAPI, JSON errors, structured logs | None for mock mode |
 | #3 End-to-end | Real Opentrons pipeline under 30s; refusal integration test; Python and dashboard CI passed on PR #18 | Recheck latest PR revision before merge |
-| #4 Team / CODEOWNERS | Four existing accounts have admin/write; fallback routing file | Confirm lanes/fourth member; verify routing after base-branch merge |
-| #5 Docs / submission | Reproducible README, demo script, checklist, account attribution | Full participant rules and preferred legal names |
+| #4 Team / CODEOWNERS | Four confirmed members have admin/write; all share repository-wide ownership with no separate roles | Verify review auto-routing after base-branch merge |
+| #5 Docs / submission | Reproducible README, demo script, checklist, confirmed account attribution; official terms/waiver reviewed | Confirm submission-form fields and judge/video access requirements |
 | #6 Fixtures | Minimal, realistic, invalid JSON payloads in test and wheel resources | Available through shared PR to all lanes |
 | #7 Planner | Pydantic validation, initial call + two retries, readable rationale tests | Live planner call requires #1 credentials |
 | #8 Safety | Two mandatory gates, raised/logged refusals, uncertain/error fail closed | Demo gate is not a validated biological risk classifier |

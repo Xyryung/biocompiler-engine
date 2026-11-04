@@ -140,12 +140,14 @@ and desktop/mobile browser scenarios. It uploads a dashboard screenshot.
 - [Verification evidence](docs/verification.md)
 
 This project targets the Meta Global AI Developer Hackathon indie developer track.
-The [public event page](https://dev.meta.ai/events/global-hackathon) lists November 4,
-2026, 9 PM ET as the submission deadline. The complete entrant rules must still be
-checked in the participant portal; the public landing page is not those rules.
+The [official event page](https://cerebralvalley.ai/e/meta-ai-developer-hackathon)
+lists November 4, 2026, 9 PM ET as the submission deadline. The linked
+[official terms and event waiver](https://cerebralvalley.ai/e/meta-ai-developer-hackathon/waiver)
+have been reviewed; see the submission checklist for relevant requirements and
+the portal details that still need confirmation.
 
-Team accounts observed with repository access: `Xyryung` (admin), `MateoDG2006`,
-`GusEh06`, and `yukki2126` (write). CODEOWNERS uses the owner as fallback until
-unconfirmed lane assignments are supplied. The protected main branch requires
-one human approval. Project code and synthetic imagery: MIT; UniProt data: CC BY 4.0;
-SAM parser: its upstream SAM License.
+The confirmed team is `MateoDG2006`, `yukki2126`, `GusEh06`, and `Xyryung`.
+All four share ownership of the entire repository through CODEOWNERS, with no
+separate engineering roles. All have write/admin access. The protected main
+branch requires one human approval. Project code and synthetic imagery: MIT;
+UniProt data: CC BY 4.0; SAM parser: its upstream SAM License.
