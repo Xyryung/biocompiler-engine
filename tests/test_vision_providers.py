@@ -112,7 +112,11 @@ async def test_meta_adapter_uses_installed_sdk_and_strict_wire_schema(monkeypatc
         calls.append(kwargs)
         content = json.dumps({"decision": "allow", "reason": "in-domain"})
         return SimpleNamespace(
-            choices=[SimpleNamespace(message=SimpleNamespace(content=content, refusal=None))]
+            choices=[
+                SimpleNamespace(
+                    finish_reason="stop", message=SimpleNamespace(content=content, refusal=None)
+                )
+            ]
         )
 
     monkeypatch.setattr(provider.client.chat.completions, "create", create)

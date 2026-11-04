@@ -186,6 +186,7 @@ vision = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "httpx2" },
     { name = "imageio-ffmpeg" },
     { name = "mypy" },
     { name = "pytest" },
@@ -215,6 +216,7 @@ provides-extras = ["bio", "sandbox", "vision"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "httpx2", specifier = ">=2.16" },
     { name = "imageio-ffmpeg", specifier = ">=0.8.1" },
     { name = "mypy", specifier = ">=1.13" },
     { name = "pytest", specifier = ">=8.3" },

@@ -12,6 +12,7 @@ from biocompiler.contracts.results import (
 from biocompiler.contracts.spec import ExperimentSpec
 from biocompiler.providers.base import Provider
 from biocompiler.vision.synthetic import TIMES, decode_rle, frame, png
+from biocompiler.vision.validation import validate_plate_masks
 
 
 async def analyze_plate(provider: Provider, spec: ExperimentSpec) -> VisionResult:
@@ -19,24 +20,16 @@ async def analyze_plate(provider: Provider, spec: ExperimentSpec) -> VisionResul
     if len(plates) != 1:
         raise ValueError("Vision requires exactly one 96-well assay plate")
     plate = plates[0]
-    masks = await provider.segment(png(frame(0)), plate.id)
-    expected = {f"{row}{col}" for row in "ABCDEFGH" for col in range(1, 13)}
-    if (
-        len(masks) != 96
-        or {m.well for m in masks} != expected
-        or any(m.labware_id != plate.id for m in masks)
-    ):
-        raise ValueError("Segmentation must map all 96 wells to the declared assay plate")
+    first = frame(0)
+    masks = await provider.segment(png(first), plate.id)
+    rasters = validate_plate_masks(masks, plate.id, first.size)
     images = [(t, np.asarray(frame(t))) for t in TIMES]
     series = []
     events = []
     active = {
         ref.well for step in spec.steps for ref in step.well_refs if ref.labware_id == plate.id
     }
-    for mask in masks:
-        raster = decode_rle(mask)
-        if not raster.any() or raster.shape != images[0][1].shape[:2]:
-            raise ValueError("Empty or incorrectly sized well mask")
+    for mask, raster in zip(masks, rasters, strict=True):
         samples = []
         for seconds, image in images:
             red, green, blue = image[raster].mean(axis=0)

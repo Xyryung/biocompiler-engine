@@ -38,12 +38,12 @@ def strict_schema(model: type[BaseModel]) -> dict:
 class MetaProvider:
     name = "meta"
 
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, *, client: AsyncOpenAI | None = None):
         key = settings.meta_api_key.get_secret_value() or settings.model_api_key.get_secret_value()
         if not key:
             raise ValueError("Set META_API_KEY or MODEL_API_KEY before selecting the meta provider")
         self.settings = settings
-        self.client = AsyncOpenAI(
+        self.client = client or AsyncOpenAI(
             api_key=key,
             base_url=settings.meta_base_url,
             timeout=60,
@@ -67,7 +67,12 @@ class MetaProvider:
             messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
             response_format=response_format,
         )
-        message = response.choices[0].message
+        if not response.choices:
+            raise ValueError("Meta returned no completion choices")
+        choice = response.choices[0]
+        if choice.finish_reason != "stop":
+            raise ValueError("Meta completion did not finish successfully")
+        message = choice.message
         if message.refusal or not message.content:
             raise ValueError("Model refused or returned empty content")
         return message.content
@@ -140,10 +145,13 @@ class MetaProvider:
         async with self.client.responses.stream(
             model=self.settings.meta_sam_model,
             input=media_input,
+            metadata={"mask_encoding": "one_bit", "include_confidence": "true"},
         ) as stream:
             result = await parse_responses_stream(
                 stream, image_segmentation_format()
             ).final_result()
         if not isinstance(result.outcome, CompletedOutcome):
             raise ValueError("SAM segmentation did not complete")
+        if any(diagnostic.severity == "error" for diagnostic in result.diagnostics):
+            raise ValueError("SAM returned malformed segmentation records")
         return map_records(result.records, image, labware_id)

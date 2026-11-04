@@ -37,6 +37,7 @@ dev = [
     "ruff>=0.8",
     "mypy>=1.13",
     "imageio-ffmpeg>=0.8.1",
+    "httpx2>=2.16",
 ]
 
 [build-system]

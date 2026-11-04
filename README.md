@@ -146,6 +146,17 @@ and desktop/mobile browser scenarios. It uploads a dashboard screenshot.
 `uv run python scripts/verify_live_meta.py` performs bounded real Meta acceptance
 checks for three plans, protocol simulation, safety refusal, and SAM stability
 across three frames. It requires `META_API_KEY` and never falls back to mocks.
+Use `--stage planning`, `--stage compiler`, or `--stage vision` to run only one
+stage. Each stage saves an independent passed/failed report under
+`artifacts/acceptance/meta-<stage>.json`; successful stages survive a later failure.
+An invalid credential stops extra requests. Failed reports contain error types
+and HTTP status codes, without echoing remote exception bodies or credentials.
+
+The offline suite also exercises the installed SDK's actual HTTP JSON/SSE
+decoding through an in-process transport. It covers bounded retries, refusal and
+authentication errors, truncated streams, 96 shuffled SAM IDs, crop placement,
+duplicate/overlapping masks, and consistent well geometry. These are transport
+and contract checks; they do not establish authenticated Meta availability.
 
 ## Demo and submission
 
